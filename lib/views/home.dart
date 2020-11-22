@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:workplace_workout_counter/Database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+
+// Workouts not displaying. look at https://medium.com/@abeythilakeudara3/to-do-list-in-flutter-with-sqlite-as-local-database-8b26ba2b060e for ref
 
 class Home extends StatefulWidget {
   @override
@@ -8,8 +11,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  DBProvider databaseProvider = DBProvider();
+  List<Workout> workoutList;
+  int count = 0;
+
   @override
   Widget build(BuildContext context) {
+    if (workoutList == null) {
+      workoutList = List<Workout>();
+      updateListView();
+    }
+
     return Scaffold(
       backgroundColor: Colors.amber[50],
       appBar: AppBar(
@@ -19,47 +31,65 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Text('HomeScreen'),
-          RaisedButton(
-            onPressed: () async {
-              final allWorkouts = await DBProvider.db.getAllWorkouts();
-              print('query for all workouts:');
-              allWorkouts.forEach((workout) => print(workout));
-            },
-            child: Text('workouts'),
-          ),
-        ],
-      ),
+      body: getWorkoutListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-           Navigator.pushNamed(context, '/add');
+          Navigator.pushNamed(context, '/add');
         },
         backgroundColor: Colors.red[900],
         child: Icon(Icons.add, size: 50, color: Colors.amber[200]),
       ),
     );
   }
-}
 
-// FutureBuilder<List<Workout>>(
-// future: DBProvider.db.getAllWorkouts(),
-// builder: (BuildContext context, AsyncSnapshot<List<Workout>> snapshot) {
-// if (snapshot.hasData) {
-// return ListView.builder(
-// itemCount: snapshot.data.length,
-// itemBuilder: (BuildContext context, int index) {
-// Workout item = snapshot.data[index];
-// return ListTile(
-// title: Text(item.title),
-// leading: Text(item.dailyReps.toString()),
-// trailing: Text(item.remainingReps.toString()),
-// );
-// },
-// );
-// } else {
-// return Center(child: CircularProgressIndicator());
-// }
-// },
-// ),
+
+  ListView getWorkoutListView() {
+    print('workoutlist $workoutList');
+    return ListView.builder(
+      itemCount: count,
+      itemBuilder: (BuildContext context, int position) {
+        return Card(
+          color: Colors.white,
+          elevation: 2,
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Colors.amber,
+              child: Text(
+                  this.workoutList[position].title,
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            title: Text(this.workoutList[position].title,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text('Daily reps ${this.workoutList[position].dailyReps}'),
+            trailing: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Remaining reps'),
+                Text('${this.workoutList[position].remainingReps}'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  getFirstLetter(String title) {
+    return title.substring(0, 2);
+  }
+  
+  void updateListView() {
+    final Future<Database> dbFuture = databaseProvider.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Workout>> workoutListFuture = databaseProvider.getAllWorkouts();
+      workoutListFuture.then((workoutList) {
+        setState(() {
+          this.workoutList = workoutList;
+          this.count = workoutList.length;
+        });
+      });
+    });
+  }
+
+
+}

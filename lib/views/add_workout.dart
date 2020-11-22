@@ -8,6 +8,8 @@ class AddWorkout extends StatefulWidget {
 }
 
 class _AddWorkoutState extends State<AddWorkout> {
+  DBProvider dbProvider = DBProvider();
+
   String _exerciseName;
   String _dailyReps;
 
@@ -79,10 +81,10 @@ class _AddWorkoutState extends State<AddWorkout> {
       ),
     );
   }
-}
 
-void addWorkout(String workoutName, int workoutReps) async {
-  Workout instance = Workout(
-      title: workoutName, dailyReps: workoutReps, remainingReps: workoutReps);
-  await DBProvider.db.newWorkout(instance);
+  void addWorkout(String workoutName, int workoutReps) async {
+    Workout instance = Workout(
+        title: workoutName, dailyReps: workoutReps, remainingReps: workoutReps);
+    await dbProvider.newWorkout(instance);
+  }
 }
