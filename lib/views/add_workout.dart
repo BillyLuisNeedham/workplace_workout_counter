@@ -6,6 +6,10 @@ class AddWorkout extends StatefulWidget {
 }
 
 class _AddWorkoutState extends State<AddWorkout> {
+
+  String _exerciseName;
+  String _dailyReps;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,11 +21,69 @@ class _AddWorkoutState extends State<AddWorkout> {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text(
-          'Add Workout Screen',
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                  'Add Workout',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+                ]
+              ),
+            ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+            child: TextField(
+              onChanged: (text) {
+                _exerciseName = text;
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Exercise'
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              onChanged: (text) {
+                _dailyReps = text;
+              },
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Reps'
+              ),
+            ),
+          ),
+          FlatButton(
+            onPressed: () {
+              int reps = int.parse(_dailyReps);
+              addWorkout(_exerciseName, reps);
+            },
+            color: Colors.deepPurple[900],
+            child: Text(
+                'ADD',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
+}
+
+void addWorkout(String workoutName, int workoutReps) {
+  print('added workout $workoutName, ${workoutReps.toString()}');
 }

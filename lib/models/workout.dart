@@ -9,7 +9,7 @@ class Workout {
     this.id,
     this.title,
     this.dailyReps,
-    this.remainingReps,
+    this.remainingReps
   });
 
   int id;
