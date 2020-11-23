@@ -3,18 +3,33 @@ import 'package:workplace_workout_counter/Database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 
 class AddWorkout extends StatefulWidget {
+  final Workout workout;
+
+  AddWorkout({this.workout});
+
   @override
-  _AddWorkoutState createState() => _AddWorkoutState();
+  _AddWorkoutState createState() {
+    return _AddWorkoutState(this.workout);
+  }
 }
 
 class _AddWorkoutState extends State<AddWorkout> {
-  DBProvider dbProvider = DBProvider();
+  DatabaseHelper databaseHelper = DatabaseHelper();
 
-  String _exerciseName;
-  String _dailyReps;
+  Workout workout;
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController repsController = TextEditingController();
+
+  _AddWorkoutState(this.workout);
 
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyle = Theme.of(context).textTheme.headline6;
+
+    titleController.text = workout.title;
+    repsController.text = workout.dailyReps.toString();
+
     return Scaffold(
       backgroundColor: Colors.amber[50],
       appBar: AppBar(
@@ -43,8 +58,11 @@ class _AddWorkoutState extends State<AddWorkout> {
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
             child: TextField(
+              controller: titleController,
+              style: textStyle,
               onChanged: (text) {
-                _exerciseName = text;
+                debugPrint('something changed in title text field');
+                updateTitle();
               },
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
@@ -54,10 +72,13 @@ class _AddWorkoutState extends State<AddWorkout> {
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
             child: TextField(
+              controller: repsController,
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
+              style: textStyle,
               onChanged: (text) {
-                _dailyReps = text;
+                debugPrint('something changed in reps text field');
+                updateReps();
               },
               decoration: InputDecoration(
                   border: OutlineInputBorder(), labelText: 'Reps'),
@@ -65,13 +86,15 @@ class _AddWorkoutState extends State<AddWorkout> {
           ),
           FlatButton(
             onPressed: () async {
-              int reps = int.parse(_dailyReps);
-              addWorkout(_exerciseName, reps);
-              Navigator.pop(context);
+              setState(() {
+                debugPrint('save button clicked');
+                _save();
+              });
             },
             color: Colors.deepPurple[900],
             child: Text(
               'ADD',
+              textScaleFactor: 1.5,
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -82,9 +105,48 @@ class _AddWorkoutState extends State<AddWorkout> {
     );
   }
 
-  void addWorkout(String workoutName, int workoutReps) async {
-    Workout instance = Workout(
-        title: workoutName, dailyReps: workoutReps, remainingReps: workoutReps);
-    await dbProvider.newWorkout(instance);
+  void moveToLastScreen() {
+    Navigator.pop(context, true);
+  }
+
+  //update the title of the workout
+  void updateTitle() {
+    workout.title = titleController.text;
+  }
+
+  //update dailyReps of the workout
+  void updateReps() {
+    workout.dailyReps = repsController.text;
+    workout.remainingReps = repsController.text;
+  }
+
+  //save workout to database
+  void _save() async {
+    
+    moveToLastScreen();
+    
+    int result;
+
+    //insert operation
+    result = await databaseHelper.newWorkout(workout);
+
+    if (result != 0) { //success
+      _showAlertDialog('Status', 'Workout Saved Successfully');
+    } else { //failure
+      _showAlertDialog('Status', 'Problem Saving Workout');
+    }
+  }
+
+  void _showAlertDialog(String title, String message) {
+
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+    );
+
+    showDialog(
+      context: context,
+      builder: (_) => alertDialog
+    );
   }
 }

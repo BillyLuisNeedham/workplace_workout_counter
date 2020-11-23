@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:workplace_workout_counter/Database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+import 'package:workplace_workout_counter/views/add_workout.dart';
 
-// Workouts not displaying. look at https://medium.com/@abeythilakeudara3/to-do-list-in-flutter-with-sqlite-as-local-database-8b26ba2b060e for ref
 
 class Home extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  DBProvider databaseProvider = DBProvider();
+  DatabaseHelper databaseHelper = DatabaseHelper();
   List<Workout> workoutList;
   int count = 0;
 
@@ -34,14 +35,13 @@ class _HomeState extends State<Home> {
       body: getWorkoutListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/add');
+          navigateToAdd(Workout());
         },
         backgroundColor: Colors.red[900],
         child: Icon(Icons.add, size: 50, color: Colors.amber[200]),
       ),
     );
   }
-
 
   ListView getWorkoutListView() {
     print('workoutlist $workoutList');
@@ -50,24 +50,27 @@ class _HomeState extends State<Home> {
       itemBuilder: (BuildContext context, int position) {
         return Card(
           color: Colors.white,
-          elevation: 2,
+          elevation: 2.0,
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
-              child: Text(
-                  this.workoutList[position].title,
+              child: Text(getFirstLetter(this.workoutList[position].title),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
             title: Text(this.workoutList[position].title,
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text('Daily reps ${this.workoutList[position].dailyReps}'),
-            trailing: Column(
+            subtitle:
+                Text('Daily reps ${this.workoutList[position].dailyReps}'),
+            trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('Remaining reps'),
                 Text('${this.workoutList[position].remainingReps}'),
               ],
             ),
+            onTap: () {
+              debugPrint('ListTile tapped');
+            },
           ),
         );
       },
@@ -77,11 +80,27 @@ class _HomeState extends State<Home> {
   getFirstLetter(String title) {
     return title.substring(0, 2);
   }
+
+  void navigateToAdd(Workout workout) async {
+    bool result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return AddWorkout(workout: workout);
+    }));
+
+    if (result == true) {
+      updateListView();
+    }
+  }
+
+  void getList() async {
+    List<Workout> workouts = await databaseHelper.getAllWorkouts();
+    print('workout list $workouts');
+  }
   
   void updateListView() {
-    final Future<Database> dbFuture = databaseProvider.initializeDatabase();
+    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Workout>> workoutListFuture = databaseProvider.getAllWorkouts();
+      Future<List<Workout>> workoutListFuture = databaseHelper.getAllWorkouts();
       workoutListFuture.then((workoutList) {
         setState(() {
           this.workoutList = workoutList;
@@ -90,6 +109,4 @@ class _HomeState extends State<Home> {
       });
     });
   }
-
-
 }

@@ -14,8 +14,8 @@ class Workout {
 
   int id;
   String title;
-  int dailyReps;
-  int remainingReps;
+  String dailyReps;
+  String remainingReps;
 
   factory Workout.fromMap(Map<String, dynamic> json) => Workout(
     id: json["id"],
