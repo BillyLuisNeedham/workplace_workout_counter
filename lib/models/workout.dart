@@ -9,19 +9,23 @@ class Workout {
     this.id,
     this.title,
     this.dailyReps,
-    this.remainingReps
+    this.remainingReps,
+    this.lastUpdated
   });
 
   int id;
   String title;
   String dailyReps;
   String remainingReps;
+  String lastUpdated;
+
 
   factory Workout.fromMap(Map<String, dynamic> json) => Workout(
     id: json["id"],
     title: json["title"],
     dailyReps: json["daily_reps"],
     remainingReps: json["remaining_reps"],
+    lastUpdated: json["last_updated"]
   );
 
   Map<String, dynamic> toMap() => {
@@ -29,5 +33,6 @@ class Workout {
     "title": title,
     "daily_reps": dailyReps,
     "remaining_reps": remainingReps,
+    "last_updated": lastUpdated
   };
 }

@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:workplace_workout_counter/Database.dart';
+import 'package:workplace_workout_counter/utils/Database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/views/add_workout.dart';
+import 'package:workplace_workout_counter/views/complete_workout.dart';
 
 
-class Home extends StatefulWidget {
+class WorkoutList extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _WorkoutListState createState() => _WorkoutListState();
 }
 
-class _HomeState extends State<Home> {
+class _WorkoutListState extends State<WorkoutList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<Workout> workoutList;
   int count = 0;
@@ -32,7 +33,10 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
       ),
-      body: getWorkoutListView(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+        child: getWorkoutListView(),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           navigateToAdd(Workout());
@@ -44,7 +48,6 @@ class _HomeState extends State<Home> {
   }
 
   ListView getWorkoutListView() {
-    print('workoutlist $workoutList');
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
@@ -61,7 +64,7 @@ class _HomeState extends State<Home> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
             subtitle:
                 Text('Daily reps ${this.workoutList[position].dailyReps}'),
-            trailing: Row(
+            trailing: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('Remaining reps'),
@@ -69,7 +72,7 @@ class _HomeState extends State<Home> {
               ],
             ),
             onTap: () {
-              debugPrint('ListTile tapped');
+              navigateToComplete(this.workoutList[position]);
             },
           ),
         );
@@ -92,11 +95,16 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void getList() async {
-    List<Workout> workouts = await databaseHelper.getAllWorkouts();
-    print('workout list $workouts');
+  void navigateToComplete(Workout workout) async {
+    bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return CompleteWorkout(workout: workout, appBarTitle: workout.title);
+    }));
+
+    if (result == true) {
+      updateListView();
+    }
   }
-  
+
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {

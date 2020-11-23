@@ -14,6 +14,7 @@ class DatabaseHelper {
   String colTitle = "title";
   String colDailyReps = "daily_reps";
   String colRemainingReps = 'remaining_reps';
+  String colLastUpdated = 'last_updated';
 
   DatabaseHelper._createInstance(); // Named constructor to create instance of DBProvider
 
@@ -46,7 +47,8 @@ class DatabaseHelper {
         "$colId INTEGER PRIMARY KEY AUTOINCREMENT,"
         "$colTitle TEXT,"
         "$colDailyReps TEXT,"
-        "$colRemainingReps TEXT"
+        "$colRemainingReps TEXT,"
+        "$colLastUpdated TEXT"
         ")");
   }
 
@@ -109,8 +111,10 @@ class DatabaseHelper {
     return result;
   }
 
-  deleteAllWorkouts() async {
-    final db = await database;
-    db.rawDelete("Delete * from Workout");
+  //delete all workouts in database
+  Future<int> deleteAllWorkouts() async {
+    final db = await this.database;
+    int result = await db.rawDelete("Delete * from Workout");
+    return result;
   }
 }

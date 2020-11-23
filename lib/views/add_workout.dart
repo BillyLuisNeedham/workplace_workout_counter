@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:workplace_workout_counter/Database.dart';
+import 'package:intl/intl.dart';
+import 'package:workplace_workout_counter/utils/Database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 
 class AddWorkout extends StatefulWidget {
@@ -28,7 +29,7 @@ class _AddWorkoutState extends State<AddWorkout> {
     TextStyle textStyle = Theme.of(context).textTheme.headline6;
 
     titleController.text = workout.title;
-    repsController.text = workout.dailyReps.toString();
+    repsController.text = workout.dailyReps;
 
     return Scaffold(
       backgroundColor: Colors.amber[50],
@@ -61,7 +62,6 @@ class _AddWorkoutState extends State<AddWorkout> {
               controller: titleController,
               style: textStyle,
               onChanged: (text) {
-                debugPrint('something changed in title text field');
                 updateTitle();
               },
               textInputAction: TextInputAction.next,
@@ -77,26 +77,30 @@ class _AddWorkoutState extends State<AddWorkout> {
               textInputAction: TextInputAction.done,
               style: textStyle,
               onChanged: (text) {
-                debugPrint('something changed in reps text field');
                 updateReps();
               },
               decoration: InputDecoration(
                   border: OutlineInputBorder(), labelText: 'Reps'),
             ),
           ),
-          FlatButton(
-            onPressed: () async {
-              setState(() {
-                debugPrint('save button clicked');
-                _save();
-              });
-            },
-            color: Colors.deepPurple[900],
-            child: Text(
-              'ADD',
-              textScaleFactor: 1.5,
-              style: TextStyle(
-                color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+            child: FlatButton(
+              onPressed: () async {
+                setState(() {
+                  _save();
+                });
+              },
+              color: Colors.deepPurple[900],
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  'ADD',
+                  textScaleFactor: 1.2,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           )
@@ -122,31 +126,26 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   //save workout to database
   void _save() async {
-    
+    workout.lastUpdated = DateFormat.yMMMd().format(DateTime.now());
     moveToLastScreen();
-    
+
     int result;
 
     //insert operation
     result = await databaseHelper.newWorkout(workout);
 
-    if (result != 0) { //success
-      _showAlertDialog('Status', 'Workout Saved Successfully');
-    } else { //failure
+    if (result == 0) {
+      //failure
       _showAlertDialog('Status', 'Problem Saving Workout');
     }
   }
 
   void _showAlertDialog(String title, String message) {
-
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
       content: Text(message),
     );
 
-    showDialog(
-      context: context,
-      builder: (_) => alertDialog
-    );
+    showDialog(context: context, builder: (_) => alertDialog);
   }
 }
