@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:workplace_workout_counter/utils/Database.dart';
+import 'package:workplace_workout_counter/custom_widgets/custom_list_tile.dart';
+import 'package:workplace_workout_counter/utils/database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/views/add_workout.dart';
 import 'package:workplace_workout_counter/views/complete_workout.dart';
-
 
 class WorkoutList extends StatefulWidget {
   @override
@@ -52,33 +52,40 @@ class _WorkoutListState extends State<WorkoutList> {
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
         return Card(
-          color: Colors.white,
-          elevation: 2.0,
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.amber,
-              child: Text(getFirstLetter(this.workoutList[position].title),
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            title: Text(this.workoutList[position].title,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle:
-                Text('Daily reps ${this.workoutList[position].dailyReps}'),
-            trailing: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Remaining reps'),
-                Text('${this.workoutList[position].remainingReps}'),
-              ],
-            ),
-            onTap: () {
-              navigateToComplete(this.workoutList[position]);
-            },
-          ),
-        );
+            color: Colors.white,
+            elevation: 2.0,
+            child: CustomListTile(
+              workout: workoutList[position],
+              onTap: () {
+                navigateToComplete(this.workoutList[position]);
+              },
+            ));
       },
     );
   }
+
+  // ListTile(
+// leading: CircleAvatar(
+// backgroundColor: Colors.amber,
+// child: Text(getFirstLetter(this.workoutList[position].title),
+// style: TextStyle(fontWeight: FontWeight.bold)),
+// ),
+// title: Text(this.workoutList[position].title,
+// style: TextStyle(fontWeight: FontWeight.bold)),
+// subtitle:
+// Text('Daily reps ${this.workoutList[position].dailyReps}'),
+// trailing: Column(
+// mainAxisSize: MainAxisSize.min,
+// children: [
+// Text('Remaining reps'),
+// Text('${this.workoutList[position].remainingReps}'),
+// ],
+// ),
+// onTap: () {
+// navigateToComplete(this.workoutList[position]);
+// },
+// ),
+
 
   getFirstLetter(String title) {
     return title.substring(0, 2);
@@ -96,7 +103,8 @@ class _WorkoutListState extends State<WorkoutList> {
   }
 
   void navigateToComplete(Workout workout) async {
-    bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    bool result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return CompleteWorkout(workout: workout, appBarTitle: workout.title);
     }));
 
@@ -118,3 +126,5 @@ class _WorkoutListState extends State<WorkoutList> {
     });
   }
 }
+
+

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:workplace_workout_counter/utils/Database.dart';
+import 'package:workplace_workout_counter/utils/database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 
 class AddWorkout extends StatefulWidget {

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
-import 'package:workplace_workout_counter/utils/Database.dart';
+import 'package:workplace_workout_counter/utils/database.dart';
 
 class CompleteWorkout extends StatefulWidget {
   final Workout workout;
   final String appBarTitle;
   CompleteWorkout({this.workout, this.appBarTitle});
 
-
   @override
-  _CompleteWorkoutState createState() => _CompleteWorkoutState(this.workout, this.appBarTitle);
+  _CompleteWorkoutState createState() =>
+      _CompleteWorkoutState(this.workout, this.appBarTitle);
 }
 
 class _CompleteWorkoutState extends State<CompleteWorkout> {
@@ -39,7 +39,6 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
       ),
     );
   }
-
 
   void moveToLastScreen() {
     Navigator.pop(context, true);
