@@ -88,7 +88,10 @@ class _AddWorkoutState extends State<AddWorkout> {
             child: FlatButton(
               onPressed: () async {
                 setState(() {
-                  _save();
+                  workout.suitableToSave()
+                      ? _save()
+                      : _showAlertDialog('Warning',
+                          'You must enter an exercise name and a daily reps target to achieve');
                 });
               },
               color: Colors.deepPurple[900],

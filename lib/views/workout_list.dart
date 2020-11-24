@@ -51,41 +51,21 @@ class _WorkoutListState extends State<WorkoutList> {
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
-        return Card(
-            color: Colors.white,
-            elevation: 2.0,
-            child: CustomListTile(
-              workout: workoutList[position],
-              onTap: () {
-                navigateToComplete(this.workoutList[position]);
-              },
-            ));
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
+          child: Card(
+              color: Colors.white,
+              elevation: 4.0,
+              child: CustomListTile(
+                workout: workoutList[position],
+                onTap: () {
+                  navigateToComplete(this.workoutList[position]);
+                },
+              )),
+        );
       },
     );
   }
-
-  // ListTile(
-// leading: CircleAvatar(
-// backgroundColor: Colors.amber,
-// child: Text(getFirstLetter(this.workoutList[position].title),
-// style: TextStyle(fontWeight: FontWeight.bold)),
-// ),
-// title: Text(this.workoutList[position].title,
-// style: TextStyle(fontWeight: FontWeight.bold)),
-// subtitle:
-// Text('Daily reps ${this.workoutList[position].dailyReps}'),
-// trailing: Column(
-// mainAxisSize: MainAxisSize.min,
-// children: [
-// Text('Remaining reps'),
-// Text('${this.workoutList[position].remainingReps}'),
-// ],
-// ),
-// onTap: () {
-// navigateToComplete(this.workoutList[position]);
-// },
-// ),
-
 
   getFirstLetter(String title) {
     return title.substring(0, 2);

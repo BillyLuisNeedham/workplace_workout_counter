@@ -24,7 +24,6 @@ class CustomListTile extends StatelessWidget {
           highlightColor: Colors.red[50],
           splashColor: Colors.red[100],
           onTap: () {
-            print('I was tapped');
             this.onTap();
           },
           child: SizedBox(
