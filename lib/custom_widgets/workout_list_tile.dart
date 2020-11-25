@@ -39,7 +39,9 @@ class WorkoutListTile extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(workout.title, style: _textStyle),
+                      Wrap(
+                        children: [Text(workout.title, style: _textStyle)],
+                      ),
                       Text(
                         workout.remainingReps,
                         style: _textStyle,

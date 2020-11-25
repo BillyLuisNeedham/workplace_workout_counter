@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
@@ -83,6 +84,15 @@ class DatabaseHelper {
     //for loop to create workout list from map list
     for (int i = 0; i < count; i++) {
       workoutList.add(Workout.fromMap(workoutMapList[i]));
+    }
+
+    String now = DateFormat.yMMMd().format(DateTime.now());
+
+    //if last completed isn't today, reset remaining reps
+    for (var workout in workoutList) {
+      if (workout.lastUpdated != now) {
+        workout.lastUpdated = now;
+      }
     }
 
     return workoutList;
