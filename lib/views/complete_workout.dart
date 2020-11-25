@@ -135,7 +135,7 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
                   children: [
                     IconButton(
                       onPressed: () {
-
+                        _delete();
                       },
                       icon: Icon(
                         Icons.delete,
@@ -190,6 +190,20 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
   }
 
   //TODO delete selected workout from database
+  //delete workout from database
+  void _delete() async {
+    moveToLastScreen();
+
+    int result;
+
+    //delete operation
+    result = await databaseHelper.deleteWorkout(workout.id);
+
+    //show error if failure
+    if (result == 0) {
+      _showAlertDialog('Status', 'Problem Deleting Workout');
+    }
+  }
 
   void _showAlertDialog(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
