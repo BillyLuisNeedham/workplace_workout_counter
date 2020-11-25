@@ -4,17 +4,19 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 
 const _borderRadius = BorderRadius.all(Radius.circular(10));
+const _textStyle = TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 
 class CustomListTile extends StatelessWidget {
   final Workout workout;
   final VoidCallback onTap;
+
   CustomListTile({this.workout, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width - 100;
-    final double percentage = int.parse(workout.dailyReps) / int.parse(workout.remainingReps);
-
+    final double percentage =
+        int.parse(workout.dailyReps) / int.parse(workout.remainingReps);
 
     return Material(
       color: Colors.transparent,
@@ -38,9 +40,11 @@ class CustomListTile extends StatelessWidget {
                     children: [
                       Text(
                         workout.title,
+                        style: _textStyle
                       ),
                       Text(
                         workout.remainingReps,
+                        style: _textStyle,
                       )
                     ],
                   ),

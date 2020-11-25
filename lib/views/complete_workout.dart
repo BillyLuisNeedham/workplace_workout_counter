@@ -5,14 +5,47 @@ import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/utils/database.dart';
 
 class CompleteWorkoutButton extends StatelessWidget {
+  final int reps;
+  final ValueSetter<int> onPress;
 
-  // TODO build out
+  CompleteWorkoutButton({this.reps, this.onPress});
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return FlatButton(
+      color: Colors.grey,
+      onPressed: () {
+        onPress(reps);
+      },
+      child: Text(
+        '- $reps',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
   }
 }
 
+class CompleteWorkoutButtonRow extends StatelessWidget {
+  final ValueSetter<int> onPress;
+  CompleteWorkoutButtonRow({this.onPress});
+
+  @override
+  Widget build(BuildContext context) {
+    List<int> buttonValues = [1, 5, 10, 25, 50];
+
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 8.0,
+      children: [
+        for (var item in buttonValues)
+          CompleteWorkoutButton(
+            reps: item,
+            onPress: this.onPress,
+          )
+      ],
+    );
+  }
+}
 
 const _textStyle = TextStyle(
   fontWeight: FontWeight.w400,
@@ -39,9 +72,8 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
 
   @override
   Widget build(BuildContext context) {
-
-    double percentage = int.parse(workout.dailyReps) / int.parse(workout.remainingReps);
-
+    double percentage =
+        int.parse(workout.dailyReps) / int.parse(workout.remainingReps);
 
     return Scaffold(
         backgroundColor: Colors.amber[50],
@@ -59,12 +91,12 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
               Text(
                 workout.title,
                 style: TextStyle(
-                  fontSize: 30.0,
+                  fontSize: 35.0,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 15.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -73,9 +105,9 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
                       style: _textStyle,
                     ),
                     CircularPercentIndicator(
-                      radius: 80.0,
-                      lineWidth: 6.0,
-                      percent: percentage,
+                      radius: 90.0,
+                      lineWidth: 8.0,
+                      percent: 0.5,
                       backgroundColor: Colors.green[900],
                       progressColor: Colors.green[200],
                     ),
@@ -88,7 +120,10 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              )
+              ),
+              CompleteWorkoutButtonRow(
+                onPress: _completeReps,
+              ),
             ],
           ),
         ));
@@ -102,6 +137,7 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
   void _completeReps(int reps) {
     int remainingReps = int.parse(workout.remainingReps) - reps;
     workout.remainingReps = remainingReps.toString();
+    setState(() {});
   }
 
   //save updated workout to database
