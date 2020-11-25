@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:workplace_workout_counter/custom_widgets/custom_list_tile.dart';
+import 'package:workplace_workout_counter/custom_widgets/workout_list_tile.dart';
 import 'package:workplace_workout_counter/utils/database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/views/add_workout.dart';
@@ -56,7 +56,7 @@ class _WorkoutListState extends State<WorkoutList> {
           child: Card(
               color: Colors.white,
               elevation: 4.0,
-              child: CustomListTile(
+              child: WorkoutListTile(
                 workout: workoutList[position],
                 onTap: () {
                   navigateToComplete(this.workoutList[position]);

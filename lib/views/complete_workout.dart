@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/utils/database.dart';
+import 'package:workplace_workout_counter/utils/util_functions.dart';
 
 class CompleteWorkoutButton extends StatelessWidget {
   final int reps;
@@ -72,61 +73,91 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
 
   @override
   Widget build(BuildContext context) {
-    double percentage =
-        int.parse(workout.dailyReps) / int.parse(workout.remainingReps);
+    final String initialRemainingRepsState = workout.dailyReps;
+    double percentageComplete =
+        int.parse(workout.remainingReps) / int.parse(workout.dailyReps);
 
-    return Scaffold(
-        backgroundColor: Colors.amber[50],
-        appBar: AppBar(
-          backgroundColor: Colors.red[900],
-          title: Text(
-            appBarTitle,
+    return WillPopScope(
+      onWillPop: () {
+        _onBackPressed(initialRemainingRepsState);
+      },
+      child: Scaffold(
+          backgroundColor: Colors.amber[50],
+          appBar: AppBar(
+            backgroundColor: Colors.red[900],
+            title: Text(
+              appBarTitle,
+            ),
+            centerTitle: true,
           ),
-          centerTitle: true,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                workout.title,
-                style: TextStyle(
-                  fontSize: 35.0,
-                  fontWeight: FontWeight.w600,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  workout.title,
+                  style: TextStyle(
+                    fontSize: 35.0,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 15.0),
-                child: Row(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        workout.dailyReps,
+                        style: _textStyle,
+                      ),
+                      CircularPercentIndicator(
+                        radius: 90.0,
+                        lineWidth: 8.0,
+                        percent: percentageDisplayHandler(percentageComplete),
+                        backgroundColor: Colors.green[900],
+                        progressColor: Colors.green[200],
+                      ),
+                      Text(
+                        workout.remainingReps,
+                        style: _textStyle,
+                      )
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                ),
+                CompleteWorkoutButtonRow(
+                  onPress: _completeReps,
+                ),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      workout.dailyReps,
-                      style: _textStyle,
+                    IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                        size: 60,
+                      ),
                     ),
-                    CircularPercentIndicator(
-                      radius: 90.0,
-                      lineWidth: 8.0,
-                      percent: 0.5,
-                      backgroundColor: Colors.green[900],
-                      progressColor: Colors.green[200],
-                    ),
-                    Text(
-                      workout.remainingReps,
-                      style: _textStyle,
+                    IconButton(
+                      onPressed: () {
+                        _save();
+                      },
+                      icon: Icon(
+                        Icons.add_circle,
+                        size: 60,
+
+                      ),
                     )
                   ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              ),
-              CompleteWorkoutButtonRow(
-                onPress: _completeReps,
-              ),
-            ],
-          ),
-        ));
+                )
+              ],
+            ),
+          )),
+    );
   }
 
   void moveToLastScreen() {
@@ -135,9 +166,10 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
 
   //remove reps from remaining reps of workout
   void _completeReps(int reps) {
-    int remainingReps = int.parse(workout.remainingReps) - reps;
-    workout.remainingReps = remainingReps.toString();
-    setState(() {});
+    setState(() {
+      int remainingReps = int.parse(workout.remainingReps) - reps;
+      workout.remainingReps = remainingReps.toString();
+    });
   }
 
   //save updated workout to database
@@ -154,6 +186,7 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
     if (result == 0) {
       _showAlertDialog('Status', 'Problem Updating Workout');
     }
+
   }
 
   //TODO delete selected workout from database
@@ -166,4 +199,13 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
 
     showDialog(context: context, builder: (_) => alertDialog);
   }
+
+  // handle back navigation
+  void _onBackPressed(String initialState) {
+    //reset remainingReps
+    workout.remainingReps = initialState;
+
+    moveToLastScreen();
+  }
+
 }
