@@ -16,6 +16,7 @@ class DatabaseHelper {
   String colDailyReps = "daily_reps";
   String colRemainingReps = 'remaining_reps';
   String colLastUpdated = 'last_updated';
+  String colDay = 'day';
 
   DatabaseHelper._createInstance(); // Named constructor to create instance of DBProvider
 
@@ -49,7 +50,8 @@ class DatabaseHelper {
         "$colTitle TEXT,"
         "$colDailyReps TEXT,"
         "$colRemainingReps TEXT,"
-        "$colLastUpdated TEXT"
+        "$colLastUpdated TEXT,"
+        "$colDay TEXT"
         ")");
   }
 
@@ -101,7 +103,8 @@ class DatabaseHelper {
   //get number of workout objects in database
   Future<int> getCount() async {
     Database db = await this.database;
-    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $workoutTable');
+    List<Map<String, dynamic>> x =
+        await db.rawQuery('SELECT COUNT (*) from $workoutTable');
     int result = Sqflite.firstIntValue(x);
     return result;
   }
@@ -117,7 +120,8 @@ class DatabaseHelper {
   //delete workout in database
   Future<int> deleteWorkout(int id) async {
     final db = await this.database;
-    int result = await db.rawDelete('DELETE FROM $workoutTable WHERE $colId = $id');
+    int result =
+        await db.rawDelete('DELETE FROM $workoutTable WHERE $colId = $id');
     return result;
   }
 

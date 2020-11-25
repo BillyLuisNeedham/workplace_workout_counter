@@ -10,13 +10,15 @@ class Workout {
       this.title,
       this.dailyReps,
       this.remainingReps,
-      this.lastUpdated});
+      this.lastUpdated,
+      this.day});
 
   int id;
   String title;
   String dailyReps;
   String remainingReps;
   String lastUpdated;
+  String day;
 
   //prevent workouts being saved with null
   bool suitableToSave() {
@@ -30,13 +32,16 @@ class Workout {
       title: json["title"],
       dailyReps: json["daily_reps"],
       remainingReps: json["remaining_reps"],
-      lastUpdated: json["last_updated"]);
+      lastUpdated: json["last_updated"],
+      day: json["day"]);
+
 
   Map<String, dynamic> toMap() => {
         "id": id,
         "title": title,
         "daily_reps": dailyReps,
         "remaining_reps": remainingReps,
-        "last_updated": lastUpdated
+        "last_updated": lastUpdated,
+        "day": day,
       };
 }
