@@ -8,8 +8,13 @@ import 'package:workplace_workout_counter/views/add_workout.dart';
 import 'package:workplace_workout_counter/views/complete_workout.dart';
 
 class WorkoutList extends StatefulWidget {
+
+  final String day;
+
+  WorkoutList({this.day});
+
   @override
-  _WorkoutListState createState() => _WorkoutListState();
+  _WorkoutListState createState() => _WorkoutListState(this.day);
 }
 
 class _WorkoutListState extends State<WorkoutList> {
@@ -17,6 +22,8 @@ class _WorkoutListState extends State<WorkoutList> {
   List<Workout> workoutList;
   int count = 0;
 
+  final String day;
+  _WorkoutListState(this.day);
   @override
   Widget build(BuildContext context) {
     if (workoutList == null) {
@@ -29,7 +36,7 @@ class _WorkoutListState extends State<WorkoutList> {
       appBar: AppBar(
         backgroundColor: Colors.red[900],
         title: Text(
-          'Workouts',
+          this.day,
         ),
         centerTitle: true,
       ),
