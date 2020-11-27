@@ -46,7 +46,7 @@ class _WorkoutListState extends State<WorkoutList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          navigateToAdd(Workout());
+          navigateToAdd(Workout(day: this.day));
         },
         backgroundColor: Colors.red[900],
         child: Icon(Icons.add, size: 50, color: Colors.amber[200]),
@@ -103,7 +103,7 @@ class _WorkoutListState extends State<WorkoutList> {
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Workout>> workoutListFuture = databaseHelper.getAllWorkouts();
+      Future<List<Workout>> workoutListFuture = databaseHelper.getAllDayWorkouts(this.day);
       workoutListFuture.then((workoutList) {
         setState(() {
           this.workoutList = workoutList;

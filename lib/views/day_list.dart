@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workplace_workout_counter/views/workout_list.dart';
 
 class DayList extends StatefulWidget {
   @override
@@ -27,21 +28,43 @@ class _DayListState extends State<DayList> {
           ),
           centerTitle: true,
         ),
-        body: ListView.builder(
-          itemCount: days.length,
-          itemBuilder: (BuildContext context, int position) {
-            return GestureDetector(
-              onTap: () {},
-              child: Card(
-                color: Colors.white,
-                elevation: 4.0,
-                child: Text(
-                  days[position],
-                  style: TextStyle(),
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 18.0, 0.0, 0.0),
+          child: ListView.builder(
+            itemCount: days.length,
+            itemBuilder: (BuildContext context, int position) {
+              return GestureDetector(
+                onTap: () {
+                  navigateToWorkoutList(days[position]);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 48.0),
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 4.0,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 0.0),
+                      child: Center(
+                        child: Text(
+                          days[position],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ));
+  }
+
+  void navigateToWorkoutList(String day) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return WorkoutList(day: day,);
+    }));
   }
 }

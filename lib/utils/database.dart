@@ -56,9 +56,17 @@ class DatabaseHelper {
   }
 
   //fetch operation get all workouts from database
-  Future<List<Map<String, dynamic>>> getWorkoutMapList() async {
+  Future<List<Map<String, dynamic>>> getAllWorkoutMapList() async {
     Database db = await this.database;
     var result = await db.query(workoutTable, orderBy: "$colTitle ASC");
+    return result;
+  }
+
+  //fetch all workouts that match the day
+  Future<List<Map<String, dynamic>>> getAllDayWorkoutMapList(String day) async {
+    Database db = await this.database;
+    var result =
+        await db.query(workoutTable, where: '$colDay = ?', whereArgs: [day]);
     return result;
   }
 
@@ -78,16 +86,24 @@ class DatabaseHelper {
   }
 
   //get the map list and convert it to a workout list
-  Future<List<Workout>> getAllWorkouts() async {
-    var workoutMapList = await getWorkoutMapList(); //get map list from database
+  Future<List<Workout>> getAllDayWorkouts(String day) async {
+    var workoutMapList = await getAllDayWorkoutMapList(day);
     int count = workoutMapList.length;
 
     List<Workout> workoutList = List<Workout>();
-    //for loop to create workout list from map list
+    //loop through map list and map to workout list
     for (int i = 0; i < count; i++) {
       workoutList.add(Workout.fromMap(workoutMapList[i]));
     }
 
+    //reset remaining reps if required
+    workoutList = workoutListRemainingRepsHandler(workoutList);
+
+    return workoutList;
+  }
+
+  //check if workout last updated today and if not reset remaining reps
+  List<Workout> workoutListRemainingRepsHandler(List<Workout> workoutList) {
     String now = DateFormat.yMMMd().format(DateTime.now());
 
     //if last completed isn't today, reset remaining reps
@@ -96,6 +112,24 @@ class DatabaseHelper {
         workout.lastUpdated = now;
       }
     }
+
+    return workoutList;
+  }
+
+  //get the map list and convert it to a workout list
+  Future<List<Workout>> getAllWorkouts() async {
+    var workoutMapList =
+        await getAllWorkoutMapList(); //get map list from database
+    int count = workoutMapList.length;
+
+    List<Workout> workoutList = List<Workout>();
+    //for loop to create workout list from map list
+    for (int i = 0; i < count; i++) {
+      workoutList.add(Workout.fromMap(workoutMapList[i]));
+    }
+
+    //reset remaining reps if required
+    workoutList = workoutListRemainingRepsHandler(workoutList);
 
     return workoutList;
   }
