@@ -4,8 +4,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:workplace_workout_counter/custom_widgets/workout_list_tile.dart';
 import 'package:workplace_workout_counter/utils/database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
-import 'package:workplace_workout_counter/views/add_workout.dart';
-import 'package:workplace_workout_counter/views/complete_workout.dart';
+import 'package:workplace_workout_counter/screens/add_workout.dart';
+import 'package:workplace_workout_counter/screens/complete_workout.dart';
 
 class WorkoutList extends StatefulWidget {
 

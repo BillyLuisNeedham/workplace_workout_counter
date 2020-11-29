@@ -27,6 +27,8 @@ dependencies:
   path_provider: any
   intl: ^0.15.7
   percent_indicator: "^2.1.7+2"
+  android_alarm_manager: 0.4.5+17
+  flutter_local_notifications: ^0.9.1+1
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workplace_workout_counter/views/workout_list.dart';
+import 'package:workplace_workout_counter/screens/workout_list.dart';
 
 class DayList extends StatefulWidget {
   @override
