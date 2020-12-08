@@ -65,15 +65,7 @@ class _DayListState extends State<DayList> {
     );
   }
 
-  // floatingActionButton: FloatingActionButton(
-  // onPressed: () {},
-  // backgroundColor: Colors.red[900],
-  // child: Icon(
-  // Icons.alarm,
-  // size: 50,
-  // color: Colors.amber[200],
-  // ),
-  // ),
+
 
   void navigateToWorkoutList(String day) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
