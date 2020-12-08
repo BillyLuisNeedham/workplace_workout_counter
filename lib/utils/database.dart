@@ -97,23 +97,29 @@ class DatabaseHelper {
     }
 
     //reset remaining reps if required
-    workoutList = workoutListRemainingRepsHandler(workoutList);
+    List<Workout> workoutListDateHandled = workoutListRemainingRepsHandler(workoutList);
 
-    return workoutList;
+    return workoutListDateHandled;
   }
 
   //check if workout last updated today and if not reset remaining reps
   List<Workout> workoutListRemainingRepsHandler(List<Workout> workoutList) {
     String now = DateFormat.yMMMd().format(DateTime.now());
 
+    List<Workout> newWorkoutList = [];
+
     //if last completed isn't today, reset remaining reps
     for (var workout in workoutList) {
       if (workout.lastUpdated != now) {
         workout.lastUpdated = now;
+        workout.remainingReps = workout.dailyReps;
+        newWorkoutList.add(workout);
+      } else {
+        newWorkoutList.add(workout);
       }
     }
 
-    return workoutList;
+    return newWorkoutList;
   }
 
   //get the map list and convert it to a workout list
