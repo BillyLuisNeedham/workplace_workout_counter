@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:workplace_workout_counter/screens/add_workout.dart';
-import 'package:workplace_workout_counter/screens/complete_workout.dart';
-import 'package:workplace_workout_counter/screens/day_list.dart';
-import 'package:workplace_workout_counter/screens/workout_list.dart';
 
+import 'screens/home.dart';
 
 void main() async {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/',
-    routes: {
-      '/': (context) => DayList(),
-      '/list': (context) => WorkoutList(),
-      '/add': (context) => AddWorkout(),
-      '/complete': (context) => CompleteWorkout(),
-    },
+    title: 'Workplace Workout Counter',
+    home: Home(),
   ));
 }
-
-
