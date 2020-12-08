@@ -97,9 +97,24 @@ class DatabaseHelper {
     }
 
     //reset remaining reps if required
-    List<Workout> workoutListDateHandled = workoutListRemainingRepsHandler(workoutList);
+    List<Workout> workoutListDateHandled =
+        workoutListRemainingRepsHandler(workoutList);
 
     return workoutListDateHandled;
+  }
+
+  //auto increment a workout
+  Workout workoutAutoIncrement(Workout workout) {
+    print("workoutAutoIncrement fired");
+    int remReps = int.parse(workout.remainingReps);
+    print("remReps: $remReps");
+    if (remReps < 1) {
+      int newDailyReps = (remReps / 100 * 5 * 100).round();
+      print("newDailyReps: $newDailyReps");
+      workout.dailyReps = newDailyReps.toString();
+    }
+    print("workoutAutoIncrement returning: ${workout.toMap()}");
+    return workout;
   }
 
   //check if workout last updated today and if not reset remaining reps
@@ -111,9 +126,10 @@ class DatabaseHelper {
     //if last completed isn't today, reset remaining reps
     for (var workout in workoutList) {
       if (workout.lastUpdated != now) {
-        workout.lastUpdated = now;
-        workout.remainingReps = workout.dailyReps;
-        newWorkoutList.add(workout);
+        Workout newWorkout = workoutAutoIncrement(workout);
+        newWorkout.lastUpdated = now;
+        newWorkout.remainingReps = workout.dailyReps;
+        newWorkoutList.add(newWorkout);
       } else {
         newWorkoutList.add(workout);
       }
@@ -171,4 +187,5 @@ class DatabaseHelper {
     int result = await db.rawDelete("Delete * from Workout");
     return result;
   }
+
 }
