@@ -153,7 +153,7 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
                       ),
                     )
                   ],
-                )
+                ),
               ],
             ),
           )),
@@ -220,5 +220,6 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
 
     moveToLastScreen();
   }
+
 
 }

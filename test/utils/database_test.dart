@@ -33,20 +33,45 @@ void main() {
       final String yesterdayFormatted = DateFormat.yMMMd().format(yesterday);
 
       final Workout completedWorkout = Workout(
-        id:1,
-        dailyReps: '100',
-        remainingReps: '0',
-        title: 'test workout',
-        lastUpdated: yesterdayFormatted
-      );
+          id: 1,
+          dailyReps: '100',
+          remainingReps: '0',
+          title: 'test workout',
+          lastUpdated: yesterdayFormatted);
 
       final List<Workout> workoutList = [completedWorkout];
       DatabaseHelper dbHelper = DatabaseHelper();
 
-      List<Workout> newWorkoutList = dbHelper.workoutListRemainingRepsHandler(workoutList);
+      List<Workout> newWorkoutList =
+          dbHelper.workoutListRemainingRepsHandler(workoutList);
 
       expect(newWorkoutList[0].dailyReps, '105');
       expect(newWorkoutList[0].remainingReps, '105');
+    });
+
+    test('Auto increment function adds 5%', () {
+      final DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
+      final String yesterdayFormatted = DateFormat.yMMMd().format(yesterday);
+
+      final Workout completedWorkout = Workout(
+          id: 1,
+          dailyReps: '100',
+          remainingReps: '0',
+          title: 'test workout',
+          lastUpdated: yesterdayFormatted);
+
+      final expectedWorkout = Workout(
+          id: 1,
+          dailyReps: '105',
+          remainingReps: '105',
+          title: 'test workout',
+          lastUpdated: yesterdayFormatted);
+
+      DatabaseHelper dbHelper = new DatabaseHelper();
+
+      Workout result = dbHelper.workoutAutoIncrement(completedWorkout);
+
+      expect(result.dailyReps, expectedWorkout.dailyReps);
     });
   });
 }

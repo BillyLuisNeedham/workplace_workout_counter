@@ -105,15 +105,13 @@ class DatabaseHelper {
 
   //auto increment a workout
   Workout workoutAutoIncrement(Workout workout) {
-    print("workoutAutoIncrement fired");
     int remReps = int.parse(workout.remainingReps);
-    print("remReps: $remReps");
     if (remReps < 1) {
-      int newDailyReps = (remReps / 100 * 5 * 100).round();
+      int dailyReps = int.parse(workout.dailyReps);
+      int newDailyReps = (dailyReps / 100 * 5 + dailyReps).round();
       print("newDailyReps: $newDailyReps");
       workout.dailyReps = newDailyReps.toString();
     }
-    print("workoutAutoIncrement returning: ${workout.toMap()}");
     return workout;
   }
 
@@ -187,5 +185,4 @@ class DatabaseHelper {
     int result = await db.rawDelete("Delete * from Workout");
     return result;
   }
-
 }

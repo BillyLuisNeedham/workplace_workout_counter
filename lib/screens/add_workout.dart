@@ -129,16 +129,13 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   //save workout to database
   void _save() async {
-    //TODO reset back to old way
-    workout.lastUpdated = DateFormat.yMMMd().format(DateTime.now().subtract(Duration(days: 1)));
+    workout.lastUpdated = DateFormat.yMMMd().format(DateTime.now());
     moveToLastScreen();
 
     int result;
-    workout.remainingReps = '0';
     //insert operation
     result = await databaseHelper.newWorkout(workout);
 
-    print('workout to be saved ${workout.toMap()}');
     if (result == 0) {
       //failure
       _showAlertDialog('Status', 'Problem Saving Workout');
