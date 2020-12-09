@@ -133,11 +133,9 @@ class _AddWorkoutState extends State<AddWorkout> {
     moveToLastScreen();
 
     int result;
-
     //insert operation
     result = await databaseHelper.newWorkout(workout);
 
-    print('workout to be saved $workout');
     if (result == 0) {
       //failure
       _showAlertDialog('Status', 'Problem Saving Workout');

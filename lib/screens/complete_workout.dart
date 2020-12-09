@@ -153,7 +153,7 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
                       ),
                     )
                   ],
-                )
+                ),
               ],
             ),
           )),
@@ -189,7 +189,6 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
 
   }
 
-  //TODO delete selected workout from database
   //delete workout from database
   void _delete() async {
     moveToLastScreen();
@@ -221,5 +220,6 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
 
     moveToLastScreen();
   }
+
 
 }
