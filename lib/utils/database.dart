@@ -16,6 +16,7 @@ class DatabaseHelper {
   String colDailyReps = "daily_reps";
   String colRemainingReps = 'remaining_reps';
   String colLastUpdated = 'last_updated';
+  String colTimePerRep = 'time_per_rep';
   String colDay = 'day';
 
   DatabaseHelper._createInstance(); // Named constructor to create instance of DBProvider
@@ -40,7 +41,7 @@ class DatabaseHelper {
     String path = directory.path + 'workouts.db';
 
     var workoutDatabase =
-        await openDatabase(path, version: 1, onCreate: _createDb);
+        await openDatabase(path, version: 2, onCreate: _createDb);
     return workoutDatabase;
   }
 
@@ -51,6 +52,7 @@ class DatabaseHelper {
         "$colDailyReps TEXT,"
         "$colRemainingReps TEXT,"
         "$colLastUpdated TEXT,"
+        "$colTimePerRep INTEGER,"
         "$colDay TEXT"
         ")");
   }

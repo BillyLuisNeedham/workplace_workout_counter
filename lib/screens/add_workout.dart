@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:workplace_workout_counter/utils/database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 
+
 class AddWorkout extends StatefulWidget {
   final Workout workout;
 
@@ -19,6 +20,8 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   Workout workout;
 
+  final String timerTooltip = 'Click to add timer functionality to workout';
+
   TextEditingController titleController = TextEditingController();
   TextEditingController repsController = TextEditingController();
 
@@ -30,6 +33,8 @@ class _AddWorkoutState extends State<AddWorkout> {
 
     titleController.text = workout.title;
     repsController.text = workout.dailyReps;
+
+    bool timerWorkout = false;
 
     return Scaffold(
       backgroundColor: Colors.amber[50],
@@ -83,29 +88,57 @@ class _AddWorkoutState extends State<AddWorkout> {
                   border: OutlineInputBorder(), labelText: 'Reps'),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-            child: FlatButton(
-              onPressed: () async {
-                setState(() {
-                  workout.suitableToSave()
-                      ? _save()
-                      : _showAlertDialog('Warning',
-                          'You must enter an exercise name and a daily reps target to achieve');
-                });
-              },
-              color: Colors.deepPurple[900],
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  'ADD',
-                  textScaleFactor: 1.2,
-                  style: TextStyle(
-                    color: Colors.white,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Tooltip(
+
+                  message: timerTooltip,
+                  child: FlatButton(
+                    onPressed: () {
+
+                    },
+                    color: Colors.deepPurple[900],
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        'TIMER',
+                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: FlatButton(
+                  onPressed: () async {
+                    setState(() {
+                      workout.suitableToSave()
+                          ? _save()
+                          : _showAlertDialog('Warning',
+                              'You must enter an exercise name and a daily reps target to achieve');
+                    });
+                  },
+                  color: Colors.deepPurple[900],
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      'ADD',
+                      textScaleFactor: 1.2,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           )
         ],
       ),
