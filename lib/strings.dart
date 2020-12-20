@@ -5,4 +5,5 @@ class Strings {
   static const String addWorkout = 'Add Workout';
   static const String exercise = "Exercise";
   static const String reps = 'Reps';
+  static const String timerButtonToolTip = 'Click to add timer functionality to workout';
 }

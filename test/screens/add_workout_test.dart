@@ -6,7 +6,7 @@ import 'package:workplace_workout_counter/strings.dart';
 
 void main() {
   group('AddWorkout', () {
-    testWidgets('on click timer button, time per rep input is displayed',
+    testWidgets('on click timer button, minute time per rep input is displayed',
         (WidgetTester tester) async {
       Workout testWorkout = new Workout();
       await tester.pumpWidget(MaterialApp(

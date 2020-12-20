@@ -22,8 +22,6 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   Workout workout;
 
-  final String timerTooltip = 'Click to add timer functionality to workout';
-
   TextEditingController titleController = TextEditingController();
   TextEditingController repsController = TextEditingController();
 
@@ -97,7 +95,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: Tooltip(
 
-                  message: timerTooltip,
+                  message: Strings.timerButtonToolTip,
                   child: FlatButton(
                     onPressed: () {
 
