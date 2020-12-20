@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/screens/add_workout.dart';
+import 'package:workplace_workout_counter/strings.dart';
 
 void main() {
   group('AddWorkout', () {
@@ -21,7 +22,7 @@ void main() {
 
 
       //find timer input and check it exists
-      final finderTimer = find.widgetWithText(TextField, 'Time');
+      final finderTimer = find.widgetWithText(TextField, Strings.timer);
       expect(finderTimer, findsOneWidget);
 
       //TODO build widget out then continue tests once current one passes

@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:workplace_workout_counter/utils/database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 
+import '../strings.dart';
+
 
 class AddWorkout extends StatefulWidget {
   final Workout workout;
@@ -41,7 +43,7 @@ class _AddWorkoutState extends State<AddWorkout> {
       appBar: AppBar(
         backgroundColor: Colors.red[900],
         title: Text(
-          'Add Workouts',
+          Strings.addWorkouts,
         ),
         centerTitle: true,
       ),
@@ -52,7 +54,7 @@ class _AddWorkoutState extends State<AddWorkout> {
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                'Add Workout',
+                Strings.addWorkout,
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -71,7 +73,7 @@ class _AddWorkoutState extends State<AddWorkout> {
               },
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Exercise'),
+                  border: OutlineInputBorder(), labelText: Strings.exercise),
             ),
           ),
           Padding(
@@ -85,7 +87,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                 updateReps();
               },
               decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Reps'),
+                  border: OutlineInputBorder(), labelText: Strings.reps),
             ),
           ),
           Row(
@@ -104,7 +106,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Text(
-                        'TIMER',
+                        Strings.timer,
                         textScaleFactor: 1.2,
                         style: TextStyle(
                           color: Colors.white,
@@ -129,7 +131,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      'ADD',
+                      Strings.add,
                       textScaleFactor: 1.2,
                       style: TextStyle(
                         color: Colors.white,
