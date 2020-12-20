@@ -5,7 +5,6 @@ import 'package:workplace_workout_counter/models/workout.dart';
 
 import '../strings.dart';
 
-
 class AddWorkout extends StatefulWidget {
   final Workout workout;
 
@@ -27,6 +26,8 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   _AddWorkoutState(this.workout);
 
+  bool timerWorkout = false;
+
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.headline6;
@@ -34,7 +35,6 @@ class _AddWorkoutState extends State<AddWorkout> {
     titleController.text = workout.title;
     repsController.text = workout.dailyReps;
 
-    bool timerWorkout = false;
 
     return Scaffold(
       backgroundColor: Colors.amber[50],
@@ -88,17 +88,56 @@ class _AddWorkoutState extends State<AddWorkout> {
                   border: OutlineInputBorder(), labelText: Strings.reps),
             ),
           ),
+          timerWorkout ?
+            Row(children: [
+              Expanded(
+                // TODO replace with a TextFieldStandard
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                  child: TextField(
+                    // TODO update controller: repsController,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    style: textStyle,
+                    onChanged: (text) {
+                      updateReps();
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: Strings.minutesPerRep),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                  child: TextField(
+                    // TODO update controller: repsController,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    style: textStyle,
+                    onChanged: (text) {
+                      updateReps();
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: Strings.secondsPerRep),
+                  ),
+                ),
+              ),
+            ]) : SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: Tooltip(
-
                   message: Strings.timerButtonToolTip,
                   child: FlatButton(
                     onPressed: () {
-
+                      setState(() {
+                        timerWorkout = !timerWorkout;
+                      });
                     },
                     color: Colors.deepPurple[900],
                     child: Padding(
@@ -116,23 +155,26 @@ class _AddWorkoutState extends State<AddWorkout> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: FlatButton(
-                  onPressed: () async {
-                    setState(() {
-                      workout.suitableToSave()
-                          ? _save()
-                          : _showAlertDialog('Warning',
-                              'You must enter an exercise name and a daily reps target to achieve');
-                    });
-                  },
-                  color: Colors.deepPurple[900],
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      Strings.add,
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: Colors.white,
+                child: Tooltip(
+                  message: Strings.addButtonToolTip,
+                  child: FlatButton(
+                    onPressed: () async {
+                      setState(() {
+                        workout.suitableToSave()
+                            ? _save()
+                            : _showAlertDialog(
+                                Strings.warning, Strings.addWorkoutError);
+                      });
+                    },
+                    color: Colors.deepPurple[900],
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        Strings.add,
+                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

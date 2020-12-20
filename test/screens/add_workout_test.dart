@@ -6,7 +6,8 @@ import 'package:workplace_workout_counter/strings.dart';
 
 void main() {
   group('AddWorkout', () {
-    testWidgets('on click timer button, minute time per rep input is displayed',
+    testWidgets(
+        'on click timer button, minute time per rep input is displayed, which is cleared when timer button is clicked again',
         (WidgetTester tester) async {
       Workout testWorkout = new Workout();
       await tester.pumpWidget(MaterialApp(
@@ -15,20 +16,49 @@ void main() {
       )));
 
       //tap timer button
-      await tester
-          .tap(find.byTooltip('Click to add timer functionality to workout'));
+      await tester.tap(find.byTooltip(Strings.timerButtonToolTip));
 
       await tester.pump();
 
+      //find minutes input and check it exists
+      final finderMinutes = find.widgetWithText(TextField, Strings.minutesPerRep);
+      expect(finderMinutes, findsOneWidget);
 
-      //find timer input and check it exists
-      final finderTimer = find.widgetWithText(TextField, Strings.timer);
-      expect(finderTimer, findsOneWidget);
+      // tap timer button again
+      await tester.tap(find.byTooltip(Strings.timerButtonToolTip));
 
-      //TODO build widget out then continue tests once current one passes
-      //tap timer button again
+      await tester.pump();
 
-      //see find timer input gone
+      //find no minutes timer input
+      expect(finderMinutes, findsNothing);
     });
+
+    testWidgets(
+        'on click timer button, seconds per rep input is displayed, which is cleared when timer button is clicked again',
+        (WidgetTester tester) async {
+      Workout testWorkout = new Workout();
+      await tester
+          .pumpWidget(MaterialApp(home: AddWorkout(workout: testWorkout)));
+
+      //tap timer button
+      await tester.tap(find.byTooltip(Strings.timerButtonToolTip));
+
+      await tester.pump();
+
+      //find seconds input and check exists
+      final finderSeconds = find.widgetWithText(TextField, Strings.secondsPerRep);
+      expect(finderSeconds, findsOneWidget);
+
+      //tap timer button again
+      await tester.tap(find.byTooltip(Strings.timerButtonToolTip));
+
+      await tester.pump();
+
+      //find no seconds timer input
+          expect(finderSeconds, findsNothing);
+    });
+
+    // TODO change timer tool tip between adding and removing
+
   });
 }
