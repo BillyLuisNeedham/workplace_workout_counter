@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:workplace_workout_counter/custom_widgets/text_field_standard.dart';
 import 'package:workplace_workout_counter/utils/database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 
@@ -30,11 +31,9 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.headline6;
 
     titleController.text = workout.title;
     repsController.text = workout.dailyReps;
-
 
     return Scaffold(
       backgroundColor: Colors.amber[50],
@@ -61,71 +60,43 @@ class _AddWorkoutState extends State<AddWorkout> {
               ),
             ]),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-            child: TextField(
-              controller: titleController,
-              style: textStyle,
-              onChanged: (text) {
-                updateTitle();
-              },
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: Strings.exercise),
-            ),
+          TextFieldBase(
+            controller: titleController,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            labelText: Strings.exercise,
+            onChangedCallback: updateTitle,
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-            child: TextField(
-              controller: repsController,
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-              style: textStyle,
-              onChanged: (text) {
-                updateReps();
-              },
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: Strings.reps),
-            ),
+          TextFieldBase(
+            controller: repsController,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+            labelText: Strings.reps,
+            onChangedCallback: updateReps,
           ),
-          timerWorkout ?
-            Row(children: [
-              Expanded(
-                // TODO replace with a TextFieldStandard
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                  child: TextField(
-                    // TODO update controller: repsController,
+          timerWorkout
+              ? Row(children: [
+                  Expanded(
+                    child: TextFieldBase(
+                      // TODO add controller
+                      // TODO add callback
+                      keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.next,
+                      labelText: Strings.minutesPerRep,
+                      // TODO tidy up
+                    ),
+                  ),
+                  Expanded(
+                      child: TextFieldBase(
+                    // TODO Add controller
+                    // TODO Add callback
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
-                    style: textStyle,
-                    onChanged: (text) {
-                      updateReps();
-                    },
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: Strings.minutesPerRep),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                  child: TextField(
-                    // TODO update controller: repsController,
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.next,
-                    style: textStyle,
-                    onChanged: (text) {
-                      updateReps();
-                    },
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: Strings.secondsPerRep),
-                  ),
-                ),
-              ),
-            ]) : SizedBox(),
+                    labelText: Strings.secondsPerRep,
+                  )
+                      ),
+                ])
+              : SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

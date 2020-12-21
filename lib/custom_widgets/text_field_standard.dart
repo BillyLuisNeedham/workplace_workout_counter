@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../strings.dart';
-
-// TODO write
-
-class TextFieldStandard extends StatelessWidget {
-
+class TextFieldBase extends StatelessWidget {
+  
+  final TextEditingController controller;
+  final TextInputType keyboardType;
+  final TextInputAction textInputAction;
+  final String labelText;
+  final void Function() onChangedCallback;
+  
+  TextFieldBase({this.controller, this.keyboardType, this.textInputAction, this.labelText, this.onChangedCallback});
+  
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.headline6;
@@ -13,17 +17,17 @@ class TextFieldStandard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
       child: TextField(
-        // TODO update controller: repsController,
-        keyboardType: TextInputType.number,
-        textInputAction: TextInputAction.next,
+        controller: controller,
+        keyboardType: keyboardType,
+        textInputAction: textInputAction,
         style: textStyle,
         onChanged: (text) {
-          updateReps();
+          onChangedCallback();
         },
         decoration: InputDecoration(
             border: OutlineInputBorder(),
-            labelText: Strings.minutesPerRep),
+            labelText: labelText),
       ),
-    ),
+    );
   }
 }
