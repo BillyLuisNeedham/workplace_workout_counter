@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workplace_workout_counter/blocs/workout_list_day_bloc.dart';
+import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/custom_widgets/workout_list/workout_list_tile.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 
@@ -11,7 +11,7 @@ class WorkoutListDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   workoutBloc.fetchAllDayWorkouts(day);
+   workoutBloc.getAllDayWorkouts(day);
     return StreamBuilder(
         stream: workoutBloc.allDayWorkouts,
         builder: (context,
