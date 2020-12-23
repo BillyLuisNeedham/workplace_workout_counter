@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
-import 'package:workplace_workout_counter/utils/database.dart';
 import 'package:workplace_workout_counter/utils/util_functions.dart';
 
 class CompleteWorkoutButton extends StatelessWidget {
@@ -64,7 +64,7 @@ class CompleteWorkout extends StatefulWidget {
 }
 
 class _CompleteWorkoutState extends State<CompleteWorkout> {
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  WorkoutBloc workoutBloc = WorkoutBloc();
 
   Workout workout;
   String appBarTitle;
@@ -180,7 +180,7 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
     int result;
 
     //update operation
-    result = await databaseHelper.updateWorkout(workout);
+    result = await workoutBloc.updateWorkout(workout);
 
     //show error if failure
     if (result == 0) {
@@ -196,7 +196,7 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
     int result;
 
     //delete operation
-    result = await databaseHelper.deleteWorkout(workout.id);
+    result = await workoutBloc.deleteWorkout(workout.id);
 
     //show error if failure
     if (result == 0) {

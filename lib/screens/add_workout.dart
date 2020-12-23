@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/custom_widgets/text_field_standard.dart';
-import 'package:workplace_workout_counter/utils/database.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 
 import '../strings.dart';
@@ -18,7 +18,7 @@ class AddWorkout extends StatefulWidget {
 }
 
 class _AddWorkoutState extends State<AddWorkout> {
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  WorkoutBloc workoutBloc = WorkoutBloc();
 
   Workout workout;
 
@@ -180,7 +180,7 @@ class _AddWorkoutState extends State<AddWorkout> {
 
     int result;
     //insert operation
-    result = await databaseHelper.newWorkout(workout);
+    result = await workoutBloc.addWorkout(workout);
 
     if (result == 0) {
       //failure
