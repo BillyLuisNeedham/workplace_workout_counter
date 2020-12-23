@@ -16,7 +16,6 @@ class _HomeState extends State<Home> {
     WorkoutListDayScreen(day: today), DayList()];
   @override
   Widget build(BuildContext context) {
-    print('today : $today');
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

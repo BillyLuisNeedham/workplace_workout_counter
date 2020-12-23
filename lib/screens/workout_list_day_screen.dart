@@ -58,15 +58,14 @@ import 'package:workplace_workout_counter/screens/complete_workout.dart';
 //   }
 // }
 
-
 class WorkoutListDayScreen extends StatefulWidget {
-
   final String day;
 
   WorkoutListDayScreen({this.day});
 
   @override
-  _WorkoutListDayScreenState createState() => _WorkoutListDayScreenState(this.day);
+  _WorkoutListDayScreenState createState() =>
+      _WorkoutListDayScreenState(this.day);
 }
 
 class _WorkoutListDayScreenState extends State<WorkoutListDayScreen> {
@@ -76,7 +75,6 @@ class _WorkoutListDayScreenState extends State<WorkoutListDayScreen> {
   _WorkoutListDayScreenState(this.day);
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.amber[50],
       appBar: AppBar(
@@ -88,7 +86,10 @@ class _WorkoutListDayScreenState extends State<WorkoutListDayScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-        child: WorkoutListDay(day: this.day, onClickWorkoutTileCallback: navigateToComplete,),
+        child: WorkoutListDay(
+          day: this.day,
+          onClickWorkoutTileCallback: navigateToComplete,
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -107,7 +108,7 @@ class _WorkoutListDayScreenState extends State<WorkoutListDayScreen> {
     }));
 
     if (result == true) {
-      print('navigateToAdd worked');
+      setState(() {});
     }
   }
 
@@ -118,10 +119,7 @@ class _WorkoutListDayScreenState extends State<WorkoutListDayScreen> {
     }));
 
     if (result == true) {
-      print('navigateToComplete worked');
+      setState(() {});
     }
   }
-
 }
-
-
