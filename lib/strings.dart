@@ -14,4 +14,6 @@ class Strings {
   static const String addWorkoutError =
       'You must enter an exercise name and a daily reps target to achieve';
   static const String secondsPerRep = 'Seconds per rep';
+  static const String navigateToCompleteError = 'error within navigateToComplete';
+  static const String navigateToAddError = 'error within navigateToAdd';
 }

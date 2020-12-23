@@ -7,7 +7,7 @@ class WorkoutBloc implements Bloc {
   final _repository = WorkoutRepository();
   final _workoutFetcher = PublishSubject<List<Workout>>();
   
-  Observable<List<Workout>> get allWorkouts => _workoutFetcher.stream;
+  Observable<List<Workout>> get allDayWorkouts => _workoutFetcher.stream;
 
   fetchAllDayWorkouts(String day) async {
     List<Workout> workoutList = await _repository.fetchAllDayWorkouts(day);
@@ -18,7 +18,7 @@ class WorkoutBloc implements Bloc {
   void dispose() {
     _workoutFetcher.close();
   }
-  
-  final bloc = WorkoutBloc();
-
 }
+
+  final workoutBloc = WorkoutBloc();
+

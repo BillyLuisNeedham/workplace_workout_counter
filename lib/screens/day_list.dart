@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workplace_workout_counter/screens/workout_list.dart';
+import 'package:workplace_workout_counter/screens/workout_list_day_screen.dart';
 
 class DayList extends StatefulWidget {
   @override
@@ -69,7 +69,7 @@ class _DayListState extends State<DayList> {
 
   void navigateToWorkoutList(String day) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return WorkoutList(
+      return WorkoutListDayScreen(
         day: day,
       );
     }));
