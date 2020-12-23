@@ -98,7 +98,8 @@ void main() {
         ),
       ));
 
-      final finderExercise = find.widgetWithText(TextFieldBase, Strings.exercise);
+      final finderExercise =
+          find.widgetWithText(TextFieldBase, Strings.exercise);
 
       await tester.enterText(finderExercise, workoutTitle);
 
@@ -113,8 +114,9 @@ void main() {
       await tester.pump();
 
       // TODO test that repository.saveWorkout is called with correct params
-      // verify(repository.saveWorkout(newWorkout))
-        });
+      verify(repository.saveWorkout(
+          Workout(title: workoutTitle, dailyReps: '28', remainingReps: '28')));
+    });
 
     // TODO change timer tool tip between adding and removing
     // TODO change reps text input action from next to done when time on or off
