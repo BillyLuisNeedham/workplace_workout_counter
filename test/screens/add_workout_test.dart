@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
+import 'package:mockito/mockito.dart';
 import 'package:workplace_workout_counter/custom_widgets/text_field_standard.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 import 'package:workplace_workout_counter/screens/add_workout.dart';
 import 'package:workplace_workout_counter/strings.dart';
-import 'package:workplace_workout_counter/utils/database.dart';
+
+class MockRepository extends Mock implements WorkoutRepository {}
 
 void main() {
   group('AddWorkout', () {
@@ -81,6 +83,38 @@ void main() {
       expect(finderWarning, findsOneWidget);
     });
 
+    testWidgets(
+        'when reps and name input are filled and add button is clicked, the workout with the correct data is saved',
+        (WidgetTester tester) async {
+      final repository = MockRepository();
+      final String workoutTitle = 'test workout';
+      final String workoutReps = '28';
+
+      Workout testWorkout = new Workout();
+
+      await tester.pumpWidget(MaterialApp(
+        home: AddWorkout(
+          workout: testWorkout,
+        ),
+      ));
+
+      final finderExercise = find.widgetWithText(TextFieldBase, Strings.exercise);
+
+      await tester.enterText(finderExercise, workoutTitle);
+
+      final finderReps = find.widgetWithText(TextFieldBase, Strings.reps);
+
+      await tester.enterText(finderReps, workoutReps);
+
+      await tester.pump();
+
+      await tester.tap(find.byTooltip(Strings.addButtonToolTip));
+
+      await tester.pump();
+
+      // TODO test that repository.saveWorkout is called with correct params
+      // verify(repository.saveWorkout(newWorkout))
+        });
 
     // TODO change timer tool tip between adding and removing
     // TODO change reps text input action from next to done when time on or off

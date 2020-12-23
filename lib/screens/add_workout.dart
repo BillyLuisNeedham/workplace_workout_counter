@@ -176,6 +176,7 @@ class _AddWorkoutState extends State<AddWorkout> {
   //save workout to database
   void _save() async {
     workout.lastUpdated = DateFormat.yMMMd().format(DateTime.now());
+    print('saved workout ${workout.toMap()}');
     moveToLastScreen();
 
     int result;
