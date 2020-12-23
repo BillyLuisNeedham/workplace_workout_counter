@@ -184,7 +184,7 @@ class _AddWorkoutState extends State<AddWorkout> {
 
     if (result == 0) {
       //failure
-      _showAlertDialog('Status', 'Problem Saving Workout');
+      _showAlertDialog(Strings.status, Strings.problemSavingWork);
     }
   }
 

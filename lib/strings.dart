@@ -16,4 +16,6 @@ class Strings {
   static const String secondsPerRep = 'Seconds per rep';
   static const String navigateToCompleteError = 'error within navigateToComplete';
   static const String navigateToAddError = 'error within navigateToAdd';
+  static const String status = 'Status';
+  static const String problemSavingWork = 'Problem Saving Workout';
 }
