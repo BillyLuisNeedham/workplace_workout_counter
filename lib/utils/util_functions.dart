@@ -11,3 +11,10 @@ double percentageDisplayHandler(double percentage) {
 
   return newPercentage;
 }
+
+//convert String to int
+extension NumberParser on String {
+  int toInt() {
+    return int.parse(this);
+  }
+}

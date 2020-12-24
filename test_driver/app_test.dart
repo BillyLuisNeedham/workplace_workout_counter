@@ -11,6 +11,8 @@ void main() {
     final String workoutTitle = 'test workout';
     final String workoutReps = '58';
     final workoutFinder = find.text(workoutTitle);
+    //TODO find number to minus reps -- text
+    //TODO find the update workout icon -- tooltip
 
     FlutterDriver driver;
 
@@ -41,7 +43,28 @@ void main() {
       await driver.waitFor(find.text(workoutTitle));
       await driver.waitFor(find.text(workoutReps));
     });
+
+    test(
+        'can complete reps on an existing workout and the exercise is updated in the database',
+        () async {
+      //navigate to add workout
+
+      //create workout
+
+      //see workout, check number
+
+      //navigate to update workout
+
+      //see current reps twice
+
+      //minus some reps
+
+      //see daily reps and current reps (should be daily reps minus amount removed
+
+      //update workout in database
+
+      //see updated workout in list
+    });
   });
   // TODO test deleting a workoutList
-  // TODO test completing some reps on a workout
 }
