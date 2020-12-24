@@ -3,11 +3,12 @@ import 'package:workplace_workout_counter/custom_widgets/workout_list/workout_li
 import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/screens/add_workout.dart';
 import 'package:workplace_workout_counter/screens/complete_workout.dart';
+import 'package:workplace_workout_counter/strings.dart';
 
 class WorkoutListDayScreen extends StatefulWidget {
   final String day;
 
-  WorkoutListDayScreen({this.day});
+  WorkoutListDayScreen({Key key, this.day}) : super(key: key);
 
   @override
   _WorkoutListDayScreenState createState() =>
@@ -37,12 +38,16 @@ class _WorkoutListDayScreenState extends State<WorkoutListDayScreen> {
           onClickWorkoutTileCallback: navigateToComplete,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          navigateToAdd(Workout(day: this.day));
-        },
-        backgroundColor: Colors.red[900],
-        child: Icon(Icons.add, size: 50, color: Colors.amber[200]),
+      floatingActionButton: Tooltip(
+        message: Strings.addWorkoutFabToolTip,
+        child: FloatingActionButton(
+          key: Key(Strings.fabAddWorkoutKey),
+          onPressed: () {
+            navigateToAdd(Workout(day: this.day));
+          },
+          backgroundColor: Colors.red[900],
+          child: Icon(Icons.add, size: 50, color: Colors.amber[200]),
+        ),
       ),
     );
   }

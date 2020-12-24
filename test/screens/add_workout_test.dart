@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/custom_widgets/text_field_standard.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 import 'package:workplace_workout_counter/screens/add_workout.dart';
 import 'package:workplace_workout_counter/strings.dart';
 
-class MockRepository extends Mock implements WorkoutRepository {}
+class MockBloc extends Mock implements WorkoutBloc {}
 
 void main() {
   group('AddWorkout', () {
@@ -86,7 +87,7 @@ void main() {
     testWidgets(
         'when reps and name input are filled and add button is clicked, the workout with the correct data is saved',
         (WidgetTester tester) async {
-      final repository = MockRepository();
+      final bloc = MockBloc();
       final String workoutTitle = 'test workout';
       final String workoutReps = '28';
 
@@ -114,7 +115,7 @@ void main() {
       await tester.pump();
 
       // TODO test that repository.saveWorkout is called with correct params
-      verify(repository.saveWorkout(
+      verify(bloc.addWorkout(
           Workout(title: workoutTitle, dailyReps: '28', remainingReps: '28')));
     });
 

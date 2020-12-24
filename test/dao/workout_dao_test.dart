@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
+import 'package:workplace_workout_counter/dao/workout_dao.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
-import 'package:workplace_workout_counter/utils/database.dart';
 
 void main() {
-  group('DatabaseHelper', () {
+  group('WorkoutDao', () {
     test('Remaining reps reset if last updated date not today', () {
       final DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
 
@@ -18,10 +18,10 @@ void main() {
           lastUpdated: yesterdayFormatted);
 
       final List<Workout> workoutList = [yesterdayWorkout];
-      DatabaseHelper dbHelper = DatabaseHelper();
+      WorkoutDao workoutDao = WorkoutDao();
 
       List<Workout> newWorkoutList =
-          dbHelper.workoutListRemainingRepsHandler(workoutList);
+          workoutDao.workoutListRemainingRepsHandler(workoutList);
 
       expect(newWorkoutList[0].remainingReps, '10');
     });
@@ -40,10 +40,10 @@ void main() {
           lastUpdated: yesterdayFormatted);
 
       final List<Workout> workoutList = [completedWorkout];
-      DatabaseHelper dbHelper = DatabaseHelper();
+      WorkoutDao workoutDao = WorkoutDao();
 
       List<Workout> newWorkoutList =
-          dbHelper.workoutListRemainingRepsHandler(workoutList);
+          workoutDao.workoutListRemainingRepsHandler(workoutList);
 
       expect(newWorkoutList[0].dailyReps, '105');
       expect(newWorkoutList[0].remainingReps, '105');
@@ -67,9 +67,9 @@ void main() {
           title: 'test workout',
           lastUpdated: yesterdayFormatted);
 
-      DatabaseHelper dbHelper = new DatabaseHelper();
+      WorkoutDao workoutDao = WorkoutDao();
 
-      Workout result = dbHelper.workoutAutoIncrement(completedWorkout);
+      Workout result = workoutDao.workoutAutoIncrement(completedWorkout);
 
       expect(result.dailyReps, expectedWorkout.dailyReps);
     });

@@ -9,7 +9,7 @@ import '../strings.dart';
 class AddWorkout extends StatefulWidget {
   final Workout workout;
 
-  AddWorkout({this.workout});
+  AddWorkout({Key key, this.workout}) : super(key: key);
 
   @override
   _AddWorkoutState createState() {
@@ -60,19 +60,25 @@ class _AddWorkoutState extends State<AddWorkout> {
               ),
             ]),
           ),
-          TextFieldBase(
-            controller: titleController,
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.next,
-            labelText: Strings.exercise,
-            onChangedCallback: updateTitle,
+          Tooltip(
+            message: Strings.inputExerciseTitleToolTip,
+            child: TextFieldBase(
+              controller: titleController,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
+              labelText: Strings.exercise,
+              onChangedCallback: updateTitle,
+            ),
           ),
-          TextFieldBase(
-            controller: repsController,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            labelText: Strings.reps,
-            onChangedCallback: updateReps,
+          Tooltip(
+            message: Strings.inputRepsToolTip,
+            child: TextFieldBase(
+              controller: repsController,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              labelText: Strings.reps,
+              onChangedCallback: updateReps,
+            ),
           ),
           timerWorkout
               ? Row(children: [
@@ -173,7 +179,7 @@ class _AddWorkoutState extends State<AddWorkout> {
     workout.remainingReps = repsController.text;
   }
 
-  //save workout to database
+  //save workout two database
   void _save() async {
     workout.lastUpdated = DateFormat.yMMMd().format(DateTime.now());
     print('saved workout ${workout.toMap()}');
