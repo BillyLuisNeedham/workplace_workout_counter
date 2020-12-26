@@ -1,4 +1,6 @@
 // prevents displaying numbers outside of 0.0 - 1.0
+import 'package:workplace_workout_counter/models/time.dart';
+
 double percentageDisplayHandler(double percentage) {
   double newPercentage = percentage;
 
@@ -23,4 +25,11 @@ extension NumberParser on String {
 int toSecondsHandler(int minutes, int seconds) {
   int minutesToSeconds = minutes * 60;
   return minutesToSeconds + seconds;
+}
+
+//converts seconds to a time model
+Time toTimeModelHandler(int seconds) {
+  int minutes = seconds ~/ 60;
+  int remSeconds = seconds % 60;
+  return Time(minutes: minutes, seconds: remSeconds);
 }
