@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/custom_widgets/workout_list/workout_list_tile.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 
 class WorkoutListDay extends StatelessWidget {
   final String day;
@@ -9,41 +10,42 @@ class WorkoutListDay extends StatelessWidget {
 
   WorkoutListDay({this.day, this.onClickWorkoutTileCallback});
 
+
+  final WorkoutBloc workoutBloc = WorkoutBloc(workoutRepository: WorkoutRepository());
+
   @override
   Widget build(BuildContext context) {
-   workoutBloc.getAllDayWorkouts(day);
+    workoutBloc.getAllDayWorkouts(day);
     return StreamBuilder(
         stream: workoutBloc.allDayWorkouts,
-        builder: (context,
-        AsyncSnapshot<List<Workout>> snapshot) {
+        builder: (context, AsyncSnapshot<List<Workout>> snapshot) {
           if (snapshot.hasData) {
             return workoutList(snapshot, this.onClickWorkoutTileCallback);
-            } else if (snapshot.hasError) {
+          } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           }
-          return Center(child:
-            CircularProgressIndicator());
-        }
-      );
+          return Center(child: CircularProgressIndicator());
+        });
   }
 
   // TODO rip into own component
-  Widget workoutList(AsyncSnapshot<List<Workout>> snapshot, final void Function(Workout) onClickTileCallback) {
+  Widget workoutList(AsyncSnapshot<List<Workout>> snapshot,
+      final void Function(Workout) onClickTileCallback) {
     return ListView.builder(
         itemCount: snapshot.data.length,
         itemBuilder: (BuildContext context, int position) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
-        child: Card(
-            color: Colors.white,
-            elevation: 4.0,
-            child: WorkoutListTile(
-              workout: snapshot.data[position],
-              onTap: () {
-                onClickWorkoutTileCallback(snapshot.data[position]);
-              },
-            )),
-      );
-    });
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
+            child: Card(
+                color: Colors.white,
+                elevation: 4.0,
+                child: WorkoutListTile(
+                  workout: snapshot.data[position],
+                  onTap: () {
+                    onClickWorkoutTileCallback(snapshot.data[position]);
+                  },
+                )),
+          );
+        });
   }
 }

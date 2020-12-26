@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/custom_widgets/text_field_standard.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+import 'package:workplace_workout_counter/utils/util_functions.dart';
 
 import '../strings.dart';
 
@@ -24,6 +25,8 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController repsController = TextEditingController();
+  TextEditingController minutesController = TextEditingController();
+  TextEditingController secondsController = TextEditingController();
 
   _AddWorkoutState(this.workout);
 
@@ -31,7 +34,6 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   @override
   Widget build(BuildContext context) {
-
     titleController.text = workout.title;
     repsController.text = workout.dailyReps;
 
@@ -84,23 +86,21 @@ class _AddWorkoutState extends State<AddWorkout> {
               ? Row(children: [
                   Expanded(
                     child: TextFieldBase(
-                      // TODO add controller
-                      // TODO add callback
+                      onChangedCallback: updateSecondsPerRep,
+                      controller: minutesController,
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                       labelText: Strings.minutesPerRep,
-                      // TODO tidy up
                     ),
                   ),
                   Expanded(
                       child: TextFieldBase(
-                    // TODO Add controller
-                    // TODO Add callback
+                    onChangedCallback: updateSecondsPerRep,
+                    controller: secondsController,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
                     labelText: Strings.secondsPerRep,
-                  )
-                      ),
+                  )),
                 ])
               : SizedBox(),
           Row(
@@ -114,6 +114,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                     onPressed: () {
                       setState(() {
                         timerWorkout = !timerWorkout;
+                        workout.secondsPerRep = null;
                       });
                     },
                     color: Colors.deepPurple[900],
@@ -177,6 +178,16 @@ class _AddWorkoutState extends State<AddWorkout> {
   void updateReps() {
     workout.dailyReps = repsController.text;
     workout.remainingReps = repsController.text;
+  }
+
+  //update secondsPerRep of the workout
+  void updateSecondsPerRep() {
+    int minutes =
+        minutesController.text.isNotEmpty ? minutesController.text.toInt() : 0;
+    int seconds =
+        secondsController.text.isNotEmpty ? secondsController.text.toInt() : 0;
+
+    workout.secondsPerRep = toSecondsHandler(minutes, seconds);
   }
 
   //save workout two database

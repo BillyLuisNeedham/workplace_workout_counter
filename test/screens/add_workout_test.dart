@@ -4,12 +4,25 @@ import 'package:mockito/mockito.dart';
 import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/custom_widgets/text_field_standard.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 import 'package:workplace_workout_counter/screens/add_workout.dart';
 import 'package:workplace_workout_counter/strings.dart';
 
-class MockBloc extends Mock implements WorkoutBloc {}
+class MockWorkoutRepository extends Mock implements WorkoutRepository {}
 
 void main() {
+  WorkoutBloc workoutBloc;
+  MockWorkoutRepository workoutRepository;
+
+  setUp(() {
+    workoutRepository = MockWorkoutRepository();
+    workoutBloc = WorkoutBloc(workoutRepository: workoutRepository);
+  });
+
+  tearDown(() {
+    workoutBloc.workoutController.close();
+  });
+
   group('AddWorkout', () {
     testWidgets(
         'on click timer button, minute time per rep input is displayed, which is cleared when timer button is clicked again',
@@ -84,40 +97,41 @@ void main() {
     });
 
     testWidgets(
-        'when reps and name input are filled and add button is clicked, the workout with the correct data is saved',
+        'When timer inputs are entered, bloc is called with a workout that has correct amounts of seconds from entered minutes and seconds',
         (WidgetTester tester) async {
-      final bloc = MockBloc();
-      final String workoutTitle = 'test workout';
-      final String workoutReps = '28';
-
+          final String testTitle = 'test title';
+          // TODO get date now
       Workout testWorkout = new Workout();
 
-      await tester.pumpWidget(MaterialApp(
-        home: AddWorkout(
-          workout: testWorkout,
-        ),
-      ));
+      AddWorkout addWorkout = new AddWorkout(workout: testWorkout,);
 
-      final finderExercise =
-          find.widgetWithText(TextFieldBase, Strings.exercise);
+      await tester
+          .pumpWidget(MaterialApp(home: addWorkout));
 
-      await tester.enterText(finderExercise, workoutTitle);
+      //click timer button
+      await tester.tap(find.byTooltip(Strings.timerButtonToolTip));
 
-      final finderReps = find.widgetWithText(TextFieldBase, Strings.reps);
+      //enter workout details
+      await tester.enterText(
+          find.widgetWithText(TextFieldBase, Strings.exercise), 'test title');
+      await tester.enterText(
+          find.widgetWithText(TextFieldBase, Strings.reps), '10');
 
-      await tester.enterText(finderReps, workoutReps);
+      //enter timer 2 minutes and 2 seconds
+      await tester.enterText(
+          find.widgetWithText(TextField, Strings.minutesPerRep), '2');
+      await tester.enterText(
+          find.widgetWithText(TextField, Strings.secondsPerRep), '2');
 
-      await tester.pump();
-
+      //click add
       await tester.tap(find.byTooltip(Strings.addButtonToolTip));
 
-      await tester.pump();
+      //see that WorkoutBloc is called with a workout model that has correct data and 122 secondsPerRep
+      verify(workoutRepository.saveWorkout(Workout()))
 
-      // TODO test that repository.saveWorkout is called with correct params
-      verify(bloc.addWorkout(
-          Workout(title: workoutTitle, dailyReps: '28', remainingReps: '28')));
     });
 
+    //TODO ensure when entering timer, if there is no time filled in shows error
     // TODO change timer tool tip between adding and removing
     // TODO change reps text input action from next to done when time on or off
   });
