@@ -3,17 +3,19 @@ import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+import 'package:workplace_workout_counter/strings.dart';
 import 'package:workplace_workout_counter/utils/util_functions.dart';
 
 class CompleteWorkoutButton extends StatelessWidget {
   final int reps;
   final ValueSetter<int> onPress;
 
-  CompleteWorkoutButton({this.reps, this.onPress});
+  CompleteWorkoutButton({Key key, this.reps, this.onPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
+      key: Key('${Strings.minusRepsButtonKey}_$reps'),
       color: Colors.grey,
       onPressed: () {
         onPress(reps);
@@ -28,7 +30,7 @@ class CompleteWorkoutButton extends StatelessWidget {
 
 class CompleteWorkoutButtonRow extends StatelessWidget {
   final ValueSetter<int> onPress;
-  CompleteWorkoutButtonRow({this.onPress});
+  CompleteWorkoutButtonRow({Key key, this.onPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ const _textStyle = TextStyle(
 class CompleteWorkout extends StatefulWidget {
   final Workout workout;
   final String appBarTitle;
-  CompleteWorkout({this.workout, this.appBarTitle});
+  CompleteWorkout({Key key,this.workout, this.appBarTitle}) : super(key: key);
 
   @override
   _CompleteWorkoutState createState() =>
@@ -108,6 +110,7 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
                     children: [
                       Text(
                         workout.dailyReps,
+                        key: Key(Strings.dailyWorkoutRepsKey),
                         style: _textStyle,
                       ),
                       CircularPercentIndicator(
@@ -119,6 +122,7 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
                       ),
                       Text(
                         workout.remainingReps,
+                        key: Key(Strings.updateWorkoutToolTip),
                         style: _textStyle,
                       )
                     ],
@@ -133,23 +137,28 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        _delete();
-                      },
-                      icon: Icon(
-                        Icons.delete,
-                        size: 60,
+                    Tooltip(
+                      message: Strings.deleteWorkoutToolTip,
+                      child: IconButton(
+                        onPressed: () {
+                          _delete();
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          size: 60,
+                        ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        _save();
-                      },
-                      icon: Icon(
-                        Icons.add_circle,
-                        size: 60,
-
+                    Tooltip(
+                      message: Strings.updateWorkoutToolTip,
+                      child: IconButton(
+                        onPressed: () {
+                          _save();
+                        },
+                        icon: Icon(
+                          Icons.add_circle,
+                          size: 60,
+                        ),
                       ),
                     )
                   ],
@@ -186,7 +195,6 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
     if (result == 0) {
       _showAlertDialog('Status', 'Problem Updating Workout');
     }
-
   }
 
   //delete workout from database
@@ -220,6 +228,4 @@ class _CompleteWorkoutState extends State<CompleteWorkout> {
 
     moveToLastScreen();
   }
-
-
 }

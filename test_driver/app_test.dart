@@ -10,9 +10,11 @@ void main() {
     final addButton = find.byTooltip(Strings.addButtonToolTip);
     final String workoutTitle = 'test workout';
     final String workoutReps = '58';
-    final workoutFinder = find.text(workoutTitle);
-    //TODO find number to minus reps -- text
-    //TODO find the update workout icon -- tooltip
+    final String workoutRepsSubtract5 = '53';
+    final updateWorkoutFinder = find.byTooltip(Strings.updateWorkoutToolTip);
+    final deleteWorkoutFinder = find.byTooltip(Strings.deleteWorkoutToolTip);
+    final minusFiveRepsButtonFinder =
+        find.byValueKey('${Strings.minusRepsButtonKey}_5');
 
     FlutterDriver driver;
 
@@ -26,7 +28,9 @@ void main() {
       }
     });
 
-    test('can add a workout and it is displayed', () async {
+    test(
+        'can add a workout and it is displayed, can update the workout and then delete it',
+        () async {
       //navigate to add workout screen
       await driver.tap(fabFinder);
 
@@ -42,29 +46,32 @@ void main() {
       //see new workout in workout list
       await driver.waitFor(find.text(workoutTitle));
       await driver.waitFor(find.text(workoutReps));
-    });
 
-    test(
-        'can complete reps on an existing workout and the exercise is updated in the database',
-        () async {
-      //navigate to add workout
-
-      //create workout
-
-      //see workout, check number
-
-      //navigate to update workout
-
-      //see current reps twice
+      //navigate to complete workouts
+      await driver.tap(find.text(workoutTitle));
 
       //minus some reps
+      await driver.tap(minusFiveRepsButtonFinder);
 
       //see daily reps and current reps (should be daily reps minus amount removed
+      await driver.waitFor(find.text(workoutReps));
+      await driver.waitFor(find.text(workoutRepsSubtract5));
 
       //update workout in database
+      await driver.tap(updateWorkoutFinder);
 
       //see updated workout in list
+      await driver.waitFor(find.text(workoutTitle));
+      await driver.waitFor(find.text(workoutRepsSubtract5));
+
+      //navigate to update workout list
+      await driver.tap(find.text(workoutTitle));
+
+      //delete workout
+      await driver.tap(deleteWorkoutFinder);
+
+      //see workout doesn't exist
+      await driver.waitForAbsent(find.text(workoutTitle));
     });
   });
-  // TODO test deleting a workoutList
 }
