@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/custom_widgets/text_field_standard.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 import 'package:workplace_workout_counter/utils/util_functions.dart';
 
 import '../strings.dart';
@@ -192,7 +192,7 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   //save workout two database
   void _save() async {
-    workout.lastUpdated = DateFormat.yMMMd().format(DateTime.now());
+    workout.lastUpdated = getDateNow();
     print('saved workout ${workout.toMap()}');
     moveToLastScreen();
 

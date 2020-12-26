@@ -1,14 +1,15 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:workplace_workout_counter/blocs/bloc.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 
 class WorkoutBloc implements Bloc {
-  final WorkoutRepository workoutRepository;
+  final WorkoutRepository workoutRepository = WorkoutRepository();
   final workoutController = StreamController<List<Workout>>.broadcast();
   String selectedDay;
-  WorkoutBloc({this.workoutRepository});
+  // WorkoutBloc({@required this.workoutRepository});
 
   get allDayWorkouts => workoutController.stream;
 

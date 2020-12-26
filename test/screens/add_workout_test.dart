@@ -7,6 +7,7 @@ import 'package:workplace_workout_counter/models/workout.dart';
 import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 import 'package:workplace_workout_counter/screens/add_workout.dart';
 import 'package:workplace_workout_counter/strings.dart';
+import 'package:workplace_workout_counter/utils/util_functions.dart';
 
 class MockWorkoutRepository extends Mock implements WorkoutRepository {}
 
@@ -99,14 +100,25 @@ void main() {
     testWidgets(
         'When timer inputs are entered, bloc is called with a workout that has correct amounts of seconds from entered minutes and seconds',
         (WidgetTester tester) async {
-          final String testTitle = 'test title';
-          // TODO get date now
+      final String testTitle = 'test title';
+      final String now = getDateNow();
+      final Workout expectedWorkout = Workout(
+          title: testTitle,
+          dailyReps: '10',
+          remainingReps: '10',
+          secondsPerRep: 122,
+          lastUpdated: now);
+
+      when(workoutRepository.saveWorkout(expectedWorkout))
+          .thenAnswer((_) async => 1);
+
       Workout testWorkout = new Workout();
 
-      AddWorkout addWorkout = new AddWorkout(workout: testWorkout,);
+      AddWorkout addWorkout = new AddWorkout(
+        workout: testWorkout,
+      );
 
-      await tester
-          .pumpWidget(MaterialApp(home: addWorkout));
+      await tester.pumpWidget(MaterialApp(home: addWorkout));
 
       //click timer button
       await tester.tap(find.byTooltip(Strings.timerButtonToolTip));
@@ -127,8 +139,7 @@ void main() {
       await tester.tap(find.byTooltip(Strings.addButtonToolTip));
 
       //see that WorkoutBloc is called with a workout model that has correct data and 122 secondsPerRep
-      verify(workoutRepository.saveWorkout(Workout()))
-
+      verify(workoutRepository.saveWorkout(expectedWorkout)).called(1);
     });
 
     //TODO ensure when entering timer, if there is no time filled in shows error
