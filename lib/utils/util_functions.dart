@@ -1,4 +1,5 @@
 // prevents displaying numbers outside of 0.0 - 1.0
+import 'package:intl/intl.dart';
 import 'package:workplace_workout_counter/models/time.dart';
 
 double percentageDisplayHandler(double percentage) {
@@ -32,4 +33,9 @@ Time toTimeModelHandler(int seconds) {
   int minutes = seconds ~/ 60;
   int remSeconds = seconds % 60;
   return Time(minutes: minutes, seconds: remSeconds);
+}
+
+//gets the current date
+String getDateNow() {
+  return DateFormat.yMMMd().format(DateTime.now());
 }

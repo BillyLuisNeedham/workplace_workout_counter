@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:test/test.dart';
 import 'package:workplace_workout_counter/models/time.dart';
 import 'package:workplace_workout_counter/utils/util_functions.dart';
@@ -43,6 +44,12 @@ void main() {
       final result3 = toTimeModelHandler(60);
       expect(result3.minutes, expectedResult3.minutes);
       expect(result3.seconds, expectedResult3.seconds);
+    });
+
+    test('getDateNow gets the current date', () {
+      final result = getDateNow();
+      final now = DateFormat.yMMMd().format(DateTime.now());
+      expect(result, now);
     });
   });
 }
