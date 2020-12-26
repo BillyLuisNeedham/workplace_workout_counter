@@ -13,5 +13,14 @@ void main() {
       //see string number now an int
       expect(parsedString, 2);
     });
+    test('toSecondsHandler converts minutes and seconds to just seconds', () {
+      //2 minutes and 1 seconds converts to 121 seconds
+      final result = toSecondsHandler(2, 1);
+      expect(result, 121);
+
+      //0 minutes and 10 seconds converts to 10 seconds
+      final result2 = toSecondsHandler(0, 10);
+      expect(result2, 10);
+    });
   });
 }
