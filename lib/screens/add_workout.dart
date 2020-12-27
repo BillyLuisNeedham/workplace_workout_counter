@@ -19,7 +19,7 @@ class AddWorkout extends StatefulWidget {
 }
 
 class _AddWorkoutState extends State<AddWorkout> {
-  WorkoutBloc workoutBloc = WorkoutBloc();
+  WorkoutBloc workoutBloc = WorkoutBloc(workoutRepository: WorkoutRepository());
 
   Workout workout;
 

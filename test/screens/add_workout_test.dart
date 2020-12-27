@@ -18,6 +18,7 @@ void main() {
   setUp(() {
     workoutRepository = MockWorkoutRepository();
     workoutBloc = WorkoutBloc(workoutRepository: workoutRepository);
+        // WorkoutBloc(workoutRepository: workoutRepository);
   });
 
   tearDown(() {

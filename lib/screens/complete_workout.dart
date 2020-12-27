@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 import 'package:workplace_workout_counter/strings.dart';
 import 'package:workplace_workout_counter/utils/util_functions.dart';
 
@@ -66,7 +67,7 @@ class CompleteWorkout extends StatefulWidget {
 }
 
 class _CompleteWorkoutState extends State<CompleteWorkout> {
-  WorkoutBloc workoutBloc = WorkoutBloc();
+  WorkoutBloc workoutBloc = WorkoutBloc(workoutRepository: WorkoutRepository());
 
   Workout workout;
   String appBarTitle;
