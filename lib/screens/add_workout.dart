@@ -2,24 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/custom_widgets/text_field_standard.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
-import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 import 'package:workplace_workout_counter/utils/util_functions.dart';
 
 import '../strings.dart';
 
 class AddWorkout extends StatefulWidget {
   final Workout workout;
+  final WorkoutBloc workoutBloc;
 
-  AddWorkout({Key key, this.workout}) : super(key: key);
+  AddWorkout({Key key, @required this.workout, @required this.workoutBloc})
+      : super(key: key);
 
   @override
   _AddWorkoutState createState() {
-    return _AddWorkoutState(this.workout);
+    return _AddWorkoutState(
+        workout: this.workout, workoutBloc: this.workoutBloc);
   }
 }
 
 class _AddWorkoutState extends State<AddWorkout> {
-  WorkoutBloc workoutBloc = WorkoutBloc(workoutRepository: WorkoutRepository());
+  WorkoutBloc workoutBloc;
 
   Workout workout;
 
@@ -28,7 +30,7 @@ class _AddWorkoutState extends State<AddWorkout> {
   TextEditingController minutesController = TextEditingController();
   TextEditingController secondsController = TextEditingController();
 
-  _AddWorkoutState(this.workout);
+  _AddWorkoutState({this.workout, this.workoutBloc});
 
   bool timerWorkout = false;
 

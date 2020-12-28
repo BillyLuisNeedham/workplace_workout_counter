@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:workplace_workout_counter/blocs/workout_bloc.dart';
 import 'package:workplace_workout_counter/custom_widgets/workout_list/workout_list_day.dart';
 import 'package:workplace_workout_counter/models/workout.dart';
+import 'package:workplace_workout_counter/repositories/workout_repository.dart';
 import 'package:workplace_workout_counter/screens/add_workout.dart';
 import 'package:workplace_workout_counter/screens/complete_workout.dart';
 import 'package:workplace_workout_counter/strings.dart';
@@ -55,7 +57,10 @@ class _WorkoutListDayScreenState extends State<WorkoutListDayScreen> {
   void navigateToAdd(Workout workout) async {
     bool result =
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return AddWorkout(workout: workout);
+      return AddWorkout(
+        workout: workout,
+        workoutBloc: WorkoutBloc(workoutRepository: WorkoutRepository()),
+      );
     }));
 
     if (result == true) {
